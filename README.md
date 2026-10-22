@@ -1,76 +1,122 @@
-# Website quảng bá sản phẩm công nghệ
+# WEBSITE QUẢNG BÁ SẢN PHẨM CÔNG NGHỆ
 
-## 1. Giới thiệu
+## 1. Giới thiệu đề tài
 
-Dự án xây dựng website WordPress quảng bá các sản phẩm điện tử và công nghệ. Hệ thống sử dụng Docker Compose để triển khai các dịch vụ trong môi trường container, kết hợp giám sát tài nguyên và thu thập log tập trung nhằm hỗ trợ theo dõi hoạt động của website.
+Dự án xây dựng website WordPress phục vụ việc giới thiệu và quảng bá các sản phẩm điện tử, công nghệ. Hệ thống được triển khai bằng Docker Compose, bao gồm các dịch vụ phục vụ website, quản lý cơ sở dữ liệu, giám sát hệ thống và thu thập log tập trung.
 
-## 2. Công nghệ sử dụng
+Bên cạnh chức năng quảng bá sản phẩm, dự án tích hợp Prometheus, Grafana, cAdvisor, Loki và Promtail nhằm hỗ trợ theo dõi hoạt động của các dịch vụ và truy vấn log trong quá trình vận hành.
 
-- WordPress và PHP: xây dựng website.
-- MySQL 8.0: lưu trữ dữ liệu.
-- phpMyAdmin: quản trị cơ sở dữ liệu.
-- Nginx: reverse proxy và bổ sung các HTTP security headers.
-- Prometheus: thu thập metrics.
-- Grafana: trực quan hóa dữ liệu giám sát và truy vấn log.
-- cAdvisor: thu thập metrics của container.
-- Loki: lưu trữ và truy vấn log tập trung.
-- Promtail: thu thập log và gửi đến Loki.
-- Docker Compose: quản lý và triển khai các dịch vụ.
-- Git và GitHub: quản lý mã nguồn.
+## 2. Mục tiêu dự án
 
-## 3. Chức năng chính
-
-- Hiển thị và quảng bá sản phẩm công nghệ.
-- Lưu trữ dữ liệu website trong MySQL.
-- Quản trị cơ sở dữ liệu bằng phpMyAdmin.
-- Chuyển tiếp yêu cầu truy cập website qua Nginx.
-- Thu thập và giám sát metrics bằng Prometheus và cAdvisor.
-- Hiển thị dữ liệu giám sát thông qua Grafana.
-- Thu thập, tập trung và truy vấn log bằng Loki, Promtail và LogQL.
+- Xây dựng website quảng bá sản phẩm công nghệ bằng WordPress.
+- Sử dụng MySQL để lưu trữ dữ liệu website.
+- Sử dụng Nginx làm reverse proxy cho website.
 - Triển khai các dịch vụ bằng Docker Compose.
+- Thu thập và theo dõi metrics của Prometheus và cAdvisor.
+- Tích hợp Grafana để trực quan hóa dữ liệu giám sát.
+- Sử dụng Loki và Promtail để tập trung, truy vấn log bằng LogQL.
+- Quản lý mã nguồn và lịch sử thay đổi bằng Git, GitHub.
 
-## 4. Cấu trúc thư mục
+## 3. Công nghệ sử dụng
 
-- `docker-compose.yml`: định nghĩa các dịch vụ và mạng Docker.
-- `.env`: chứa các biến môi trường và thông tin xác thực; không đưa lên GitHub.
-- `.gitignore`: loại trừ các tệp không nên đưa vào Git.
+| Công nghệ | Vai trò |
+|---|---|
+| WordPress | Xây dựng website |
+| PHP | Nền tảng thực thi WordPress |
+| MySQL 8.0 | Lưu trữ dữ liệu |
+| phpMyAdmin | Quản trị cơ sở dữ liệu |
+| Nginx | Reverse proxy và bổ sung HTTP security headers |
+| Docker Compose | Khởi chạy và quản lý các dịch vụ |
+| Prometheus | Thu thập metrics |
+| cAdvisor | Thu thập metrics container |
+| Grafana | Hiển thị dữ liệu giám sát và truy vấn log |
+| Loki | Lưu trữ và truy vấn log tập trung |
+| Promtail | Thu thập log và gửi đến Loki |
+| Git, GitHub | Quản lý mã nguồn và lịch sử commit |
+
+## 4. Kiến trúc hệ thống
+
+Hệ thống được tổ chức thành các nhóm dịch vụ:
+
+### 4.1. Nhóm website
+
+- WordPress xử lý nội dung và giao diện website.
+- MySQL lưu trữ dữ liệu.
+- phpMyAdmin hỗ trợ quản trị cơ sở dữ liệu.
+- Nginx tiếp nhận yêu cầu HTTP và chuyển tiếp đến WordPress.
+
+### 4.2. Nhóm giám sát
+
+- Prometheus thu thập metrics từ chính nó và cAdvisor theo cấu hình hiện tại.
+- cAdvisor cung cấp thông tin hoạt động của container.
+- Grafana kết nối với Prometheus để xem metrics.
+
+### 4.3. Nhóm log tập trung
+
+- Promtail phát hiện container Docker và thu thập log.
+- Loki tiếp nhận và lưu trữ log.
+- Grafana Explore cho phép truy vấn log bằng LogQL.
+
+Các dịch vụ được quản lý bằng Docker Compose và kết nối thông qua mạng Docker được khai báo trong cấu hình dự án.
+
+## 5. Cấu trúc thư mục
+
+Các thành phần chính của dự án:
+
+- `docker-compose.yml`: cấu hình các dịch vụ, mạng và volume Docker.
+- `.env`: chứa các biến môi trường và thông tin xác thực.
+- `.gitignore`: quy định các tệp không đưa vào Git.
 - `tech-green/`: mã nguồn giao diện WordPress.
-- `nginx/default.conf`: cấu hình Nginx.
+- `nginx/`: cấu hình Nginx.
 - `prometheus/prometheus.yml`: cấu hình thu thập metrics.
-- `grafana/provisioning/`: cấu hình datasource và dashboard provisioning.
+- `grafana/provisioning/datasources/`: cấu hình datasource Grafana.
+- `grafana/provisioning/dashboards/`: cấu hình dashboard provisioning.
 - `loki/loki-config.yml`: cấu hình Loki.
-- `promtail/promtail-config.yml`: cấu hình thu thập log.
+- `promtail/promtail-config.yml`: cấu hình thu thập log của Promtail.
 
-## 5. Yêu cầu hệ thống
+## 6. Yêu cầu hệ thống
 
 - Docker Desktop.
 - Docker Compose.
 - Git.
+- Visual Studio Code hoặc trình soạn thảo mã nguồn tương đương.
 - Trình duyệt web.
 
-## 6. Cấu hình và triển khai
+## 7. Hướng dẫn triển khai
 
-### 6.1. Cấu hình môi trường
+### 7.1. Chuẩn bị dự án
 
-Tạo tệp `.env` tại thư mục gốc dự án dựa trên tệp mẫu do người quản lý dự án cung cấp. Điền các biến môi trường phù hợp với `docker-compose.yml`.
+Mở PowerShell tại thư mục dự án:
 
-Không chia sẻ hoặc commit mật khẩu thật lên GitHub.
+```powershell
+cd "C:\Users\PV\OneDrive\Máy tính\website-quang-ba-san-pham"
+```
 
-### 6.2. Khởi động hệ thống
+Đảm bảo Docker Desktop đang chạy và tệp `.env` đã được tạo với các biến môi trường phù hợp với `docker-compose.yml`.
 
-Mở PowerShell tại thư mục dự án và chạy:
+### 7.2. Kiểm tra cấu hình Docker Compose
+
+```powershell
+docker compose config --quiet
+```
+
+Nếu lệnh hoàn tất mà không báo lỗi, cấu hình Compose đã vượt qua bước kiểm tra cú pháp và phân giải cấu hình.
+
+### 7.3. Khởi động các dịch vụ
 
 ```powershell
 docker compose up -d
 ```
 
-### 6.3. Kiểm tra trạng thái container
+Lệnh trên khởi chạy các dịch vụ theo cấu hình Compose. Không sử dụng lệnh xóa volume khi muốn giữ dữ liệu hiện có.
+
+### 7.4. Kiểm tra trạng thái
 
 ```powershell
 docker compose ps
 ```
 
-Xem log của một dịch vụ cụ thể:
+Xem log của dịch vụ khi cần kiểm tra lỗi:
 
 ```powershell
 docker compose logs --tail 50 prometheus
@@ -79,84 +125,90 @@ docker compose logs --tail 50 loki
 docker compose logs --tail 50 promtail
 ```
 
-## 7. Địa chỉ truy cập các dịch vụ
+## 8. Địa chỉ truy cập dịch vụ
+
+Theo cấu hình cổng hiện tại của dự án:
 
 | Dịch vụ | Địa chỉ |
 |---|---|
-| Website WordPress | http://localhost:8082 |
-| Nginx | http://localhost:8084 |
-| phpMyAdmin | http://localhost:8083 |
-| Prometheus | http://localhost:9091 |
-| Grafana | http://localhost:3001 |
-| cAdvisor | http://localhost:8085 |
-| Loki API | http://localhost:3100 |
+| Website WordPress | [http://localhost:8082](http://localhost:8082) |
+| Nginx | [http://localhost:8084](http://localhost:8084) |
+| phpMyAdmin | [http://localhost:8083](http://localhost:8083) |
+| Prometheus | [http://localhost:9091](http://localhost:9091) |
+| Grafana | [http://localhost:3001](http://localhost:3001) |
+| cAdvisor | [http://localhost:8085](http://localhost:8085) |
+| Loki API | [http://localhost:3100](http://localhost:3100) |
 
-Đăng nhập Grafana bằng tài khoản được cấu hình trong các biến môi trường. Không lưu mật khẩu thật trong README.
+Các địa chỉ trên dùng để truy cập từ máy tính đang chạy Docker. Cổng có thể thay đổi nếu cấu hình Compose được chỉnh sửa.
 
-## 8. Giám sát bằng Prometheus và Grafana
+Grafana sử dụng tài khoản được khai báo trong cấu hình môi trường. Không ghi mật khẩu thực tế vào README.
 
-### 8.1. Kiểm tra Prometheus targets
+## 9. Giám sát hệ thống bằng Prometheus và Grafana
 
-Truy cập:
-
-http://localhost:9091/targets
-
-Kiểm tra trạng thái các target. Target có trạng thái `UP` nghĩa là Prometheus đang thu thập dữ liệu từ target đó thành công tại thời điểm kiểm tra.
-
-### 8.2. Kiểm tra Grafana datasource
+### 9.1. Kiểm tra Prometheus
 
 Truy cập:
 
-http://localhost:3001
+[http://localhost:9091/targets](http://localhost:9091/targets)
 
-Kiểm tra datasource Prometheus và Loki trong Grafana. Có thể sử dụng Explore để truy vấn dữ liệu metrics và log.
+Kiểm tra trạng thái các target đang được cấu hình. Trạng thái `UP` cho biết target có thể được Prometheus thu thập dữ liệu tại thời điểm kiểm tra.
 
-## 9. Thu thập và truy vấn log bằng Loki, Promtail và LogQL
+Cấu hình hiện tại gồm hai target:
 
-Promtail thu thập log từ các container Docker và gửi đến Loki. Grafana Explore được sử dụng để truy vấn log bằng LogQL.
+- `prometheus:9090`: giám sát Prometheus.
+- `cadvisor:8080`: thu thập metrics từ cAdvisor.
 
-### Query 1: Xem log WordPress
+### 9.2. Kiểm tra datasource Grafana
+
+Truy cập:
+
+[http://localhost:3001](http://localhost:3001)
+
+Trong Grafana, kiểm tra datasource Prometheus và Loki. Có thể sử dụng mục Explore để kiểm tra dữ liệu metrics và log.
+
+## 10. Thu thập log tập trung bằng Loki và Promtail
+
+### 10.1. Quy trình hoạt động
+
+1. Promtail phát hiện container Docker theo cấu hình.
+2. Promtail thu thập log và gắn nhãn cho log.
+3. Log được gửi đến Loki thông qua API.
+4. Grafana kết nối với Loki để truy vấn và xem log.
+
+### 10.2. Truy vấn LogQL
+
+Mở Grafana, chọn **Explore**, chọn datasource **Loki** và chạy các truy vấn sau.
+
+**Query 1: Xem log WordPress**
 
 ```logql
 {service="wordpress"}
 ```
 
-### Query 2: Tìm log có chứa từ khóa error
+Mục đích: xem các log mang nhãn service WordPress.
+
+**Query 2: Tìm log chứa từ khóa `error`**
 
 ```logql
 {container=~".+"} |= "error"
 ```
 
-### Query 3: Tìm log chứa error của WordPress
+Mục đích: lọc các log có nhãn container và nội dung chứa chuỗi `error`.
+
+**Query 3: Tìm log lỗi của WordPress**
 
 ```logql
 {service="wordpress"} |= "error"
 ```
 
-Kết quả phụ thuộc vào nhãn log và dữ liệu phát sinh trong khoảng thời gian được chọn. Nếu không có kết quả, hãy kiểm tra nhãn thực tế và khoảng thời gian truy vấn.
+Mục đích: lọc log WordPress có nội dung chứa chuỗi `error`.
 
-## 10. Bảo mật và lưu trữ dữ liệu
-
-- Không commit tệp `.env` chứa mật khẩu.
-- Chỉ mở các cổng dịch vụ cần thiết.
-- Không xóa Docker volumes khi chưa sao lưu dữ liệu.
-- Kiểm tra cấu hình và trạng thái container trước khi thay đổi hệ thống đang chạy.
+Kết quả phụ thuộc vào log thực tế, nhãn được gắn và khoảng thời gian đã chọn trong Grafana. Nếu truy vấn không trả về dữ liệu, cần kiểm tra nhãn log và khoảng thời gian truy vấn.
 
 ## 11. Quản lý mã nguồn
 
-Mã nguồn được quản lý bằng Git và lưu trữ trên GitHub.
+Dự án sử dụng Git để theo dõi thay đổi và GitHub để lưu trữ mã nguồn.
 
-Repository: https://github.com/dtc245220051/website-quang-ba-san-pham
+Repository:
 
-Các thay đổi được ghi nhận qua các commit có nội dung mô tả cụ thể.
-
-## 12. Kết quả triển khai
-
-Hệ thống hướng đến các kết quả sau:
-
-- Website WordPress chạy trong Docker.
-- Dữ liệu website được lưu trong MySQL.
-- Nginx tiếp nhận và chuyển tiếp yêu cầu truy cập.
-- Prometheus và cAdvisor cung cấp dữ liệu giám sát theo cấu hình.
-- Grafana hiển thị dữ liệu và hỗ trợ truy vấn log.
-- Loki và Promtail thực hiện thu thập, tập trung và truy vấn log bằng LogQL.
+[https://github.com/dtc245220051/website-quang-ba-san-pham](https://github.com/dtc245220051/website-quang-ba-san-pham)
