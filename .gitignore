@@ -1,0 +1,28 @@
+
+# Secrets and environment variables
+.env
+.env.*
+!.env.example
+
+# Docker Compose backup files
+*.bak
+*.before-network.bak
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+
+# Operating system and editor files
+Thumbs.db
+.DS_Store
+.vscode/
+
+# WordPress generated content
+tech-green/wp-content/cache/
+tech-green/wp-content/upgrade/
+
+# Database dumps and local backups
+*.sql
+*.sql.gz
+*.dump
